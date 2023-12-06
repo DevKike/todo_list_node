@@ -1,25 +1,13 @@
 const UserModel = require("../model/user.model");
 const UserSchema = require("../schema/user.schema");
 
-const createUser = (req, res) => {
+const createUser = (user) => {
   try {
-    const { error, value } = UserSchema.validate(req.body);
-    if (error) {
-      return res.status(400).json({ error: error.details[0].message });
-    } else {
-      const { name, last_name, email, password } = value;
-
-      const newUser = new UserModel(name, last_name, email, password);
-
-      res.status(201).json({
-        status: 201,
-        message: "User created successfully",
-        data: newUser,
-      });
-    }
+    console.log('user: ', user);
+    const newUser = new UserModel(user.name, user.last_name, user.email, user.password);
+    return newUser;
   } catch (error) {
-    console.log(error.message);
-    res.status(400).send({ error: "Error creating user" });
+    throw error;
   }
 };
 
