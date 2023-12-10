@@ -1,4 +1,5 @@
 const express = require("express");
+const sequelize = require("./db/sequelize");
 const config = require("./config/config");
 const userRouter = require("./modules/user/user.router");
 const app = express();
@@ -8,6 +9,12 @@ app.use(express.json());
 
 app.use("/user", userRouter);
 
-app.listen(port, () => {
-  console.log(`Server running in port ${port}`);
+app.listen(port, async () => {
+  try {
+    await sequelize.authenticate();
+    console.log("Connection has been established successfully.");
+    console.log(`Server running in port http://localhost:${port}`);
+  } catch (error) {
+    console.error("Unable to connect to the database:", error);
+  }
 });
