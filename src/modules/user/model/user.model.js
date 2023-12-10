@@ -1,10 +1,43 @@
-class UserModel {
-  constructor(name, last_name, email, password) {
-    this.name = name;
-    this.last_name = last_name;
-    this.email = email;
-    this.password = password;
+const { Model, DataTypes } = require("sequelize");
+
+const USER_TABLE = "users";
+
+const UserSchema = {
+  id: {
+    allowNull: false,
+    type: DataTypes.INTEGER,
+    autoIncrement: true,
+    unique: true,
+    primaryKey: true,
+  },
+  name: {
+    allowNull: false,
+    type: DataTypes.STRING,
+  },
+  last_name: {
+    allowNull: false,
+    type: DataTypes.STRING,
+  },
+  email: {
+    allowNull: false,
+    type: DataTypes.STRING,
+    unique: true,
+  },
+  password: {
+    allowNull: false,
+    type: DataTypes.STRING,
+  },
+};
+
+class User extends Model {
+  static config(sequelize) {
+    return {
+      sequelize,
+      tableName: USER_TABLE,
+      modelName: "User",
+      timestamps: false,
+    };
   }
 }
 
-module.exports = UserModel;
+module.exports = { USER_TABLE, UserSchema, User };

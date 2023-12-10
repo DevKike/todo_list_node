@@ -1,14 +1,14 @@
-const UserModel = require("../model/user.model");
-const UserSchema = require("../schema/user.schema");
+const { create } = require("../service/user.service");
+const { hash } = require("../../../util/bcrypt");
 
-const createUser = (user) => {
+const createUser = async (user) => {
   try {
-    console.log('user: ', user);
-    const newUser = new UserModel(user.name, user.last_name, user.email, user.password);
+    const password = hash(user.password);
+    const newUser = await create({ ...user, password });
     return newUser;
   } catch (error) {
     throw error;
   }
 };
 
-module.exports = createUser;
+module.exports = { createUser };
