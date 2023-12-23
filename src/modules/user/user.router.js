@@ -1,7 +1,9 @@
 const express = require("express");
-const { registerUser } = require("./controller/user.controller");
+const { registerUser, loginUser } = require("./controller/user.controller");
 const schemaValidator = require("../../middleware/schemaValidator.middleware");
 const UserSchema = require("./schema/user.schema");
+
+const validateLoginSchema = schemaValidator(UserSchema);
 
 const userRouter = express.Router();
 
@@ -19,5 +21,21 @@ userRouter.post("/register", schemaValidator(UserSchema), async (req, res) => {
     });
   }
 });
+
+userRouter.post("/login", validateLoginSchema, async (req, res) => {
+  try {
+    const data = await loginUser(req.body);
+
+    res.status().json({
+      message: "user was successfully logged in",
+      data,
+    });
+  } catch (error){
+    res.status(500).json({
+      message: "User login error",
+      error: error.message,
+    });
+  }
+})
 
 module.exports = userRouter;
