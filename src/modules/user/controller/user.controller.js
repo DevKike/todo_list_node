@@ -1,7 +1,7 @@
 const { create } = require("../service/user.service");
 const { hash } = require("../../../util/bcrypt");
 
-const createUser = async (user) => {
+const registerUser = async (user) => {
   try {
     const password = hash(user.password);
     const newUser = await create({ ...user, password });
@@ -11,4 +11,4 @@ const createUser = async (user) => {
   }
 };
 
-module.exports = { createUser };
+module.exports = { registerUser };
