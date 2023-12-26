@@ -12,4 +12,7 @@ module.exports = {
     dbName: process.env.DB_NAME,
     dbPort: process.env.DB_PORT,
   },
+  TOKEN: {
+    jwtToken: process.env.SECRET_ACCESS_TOKEN,
+  }
 };
