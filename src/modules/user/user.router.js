@@ -16,9 +16,15 @@ userRouter.post("/register", schemaValidator(UserSchema), async (req, res) => {
       data,
     });
   } catch (error) {
-    res.status(500).json({
-      message: "User not created",
-    });
+    if (error.message === "Email already in use") {
+      res.status(400).json({
+        error: error.message
+      });
+    }else {
+      res.status(500).json({
+        message: "User not created"
+      });
+    }
   }
 });
 

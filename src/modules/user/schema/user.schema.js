@@ -3,11 +3,11 @@ const customMessages = {
   "string.email": "The email doesn't comply with the expected format!"
 };
 
-const UserSchema = Joi.object({
-  name: Joi.string().required(),
-  last_name: Joi.string().required(),
-  email: Joi.string().email().message(customMessages).required(),
-  password: Joi.string().required()
+const userSchema = Joi.object({
+  name: Joi.string().min(4).max(255).required(),
+  last_name: Joi.string().min(3).max(225).required(),
+  email: Joi.string().min(6).max(225).required().email(),
+  password: Joi.string().min(6).max(1024).required()
 });
 
-module.exports = UserSchema;
+module.exports = userSchema;
