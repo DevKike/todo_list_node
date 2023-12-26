@@ -1,6 +1,6 @@
 const { models } = require("../../../db/sequelize");
 
-const create = async (data) => {
+const register = async (data) => {
     try{
         const user = await models.User.create(data);
         return user;
@@ -10,4 +10,4 @@ const create = async (data) => {
     }
 }
 
-module.exports = { create };
+module.exports = register;
