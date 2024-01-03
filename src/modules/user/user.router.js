@@ -33,7 +33,7 @@ userRouter.post("/login", schemaValidator(loginSchema), async (req, res) => {
     const token = await loginUser(req.body);
 
     res.status(200).json({
-      message: "user was successfully logged in",
+      message: "User was successfully logged in",
       token,
     });
   } catch (error) {
@@ -44,6 +44,20 @@ userRouter.post("/login", schemaValidator(loginSchema), async (req, res) => {
   }
 });
 
-userRouter.get("/data", authToken(), getData)
+userRouter.get("/data", authToken(), async (req, res) => {
+  try {
+    const data = await getData(req.user);
+
+    res.status(200).json({
+      message: "Data was obtained successfully",
+      data,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Error getting data",
+      error: error.message,
+    });
+  }
+});
 
 module.exports = userRouter;

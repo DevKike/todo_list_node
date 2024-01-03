@@ -1,11 +1,10 @@
 const { hash, compare } = require("../../../util/bcrypt");
 const { signToken } = require("../../../util/jwtToken");
-const register = require("../service/user.service");
-const User = require("../model/user.model").User;
+const { register, findUserBy } = require("../service/user.service");
 
 const registerUser = async (user) => {
   try {
-    const isEmailExist = await User.findOne({ where: { email: user.email } });
+    const isEmailExist = await findUserBy({ email: user.email })
 
     if (isEmailExist) {
       throw new Error("Email already in use");
@@ -21,7 +20,7 @@ const registerUser = async (user) => {
 
 const loginUser = async ({ email, password }) => {
   try {
-    const user = await User.findOne({ where: { email } });
+    const user = await findUserBy({ email });
 
     if (!user) {
       throw new Error("Incorrect email or password");
@@ -40,19 +39,17 @@ const loginUser = async ({ email, password }) => {
   }
 };
 
-const getData = async (req, res) => {
+const getData = async (userId) => {
   try {
-    const userId = req.user;
-
-    const user = await User.findByPk(userId);
+    const user = await findUserBy({ id: userId });
 
     if (!user) {
-      return res.status(400).json({ message: "User not found" })
+      throw new Error("User not found");
     }
 
-    res.json({ user })
+    return user;
   } catch (error) {
-    res.status(500).json({ message: 'Error getting user data' });
+    throw error;
   }
 }
 
