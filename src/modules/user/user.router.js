@@ -1,5 +1,5 @@
 const express = require("express");
-const { registerUser, loginUser, getData } = require("./controller/user.controller");
+const { registerUser, loginUser, getData, updateData } = require("./controller/user.controller");
 const schemaValidator = require("../../middleware/schemaValidator.middleware");
 const { registerSchema, loginSchema } = require("./schema/user.schema");
 const authToken = require("../../middleware/authToken.middleware");
@@ -58,6 +58,25 @@ userRouter.get("/data", authToken(), async (req, res) => {
       message: "Error getting data",
       error: error.message,
     });
+  }
+});
+
+userRouter.patch("/update", authToken(), async (req, res) => {
+  try{
+    const userDataToUpdate = req.body;
+    const userToUpdate = await getData(req.user);
+
+    updateData(userDataToUpdate, userToUpdate);
+
+    res.status(200).json({
+      message: "Data was updated successfully",
+      userData: userToUpdate,
+    })
+  } catch (error) {
+    res.status(500).json({
+      message: "Error updating data",
+      error: error.message,
+    })
   }
 });
 

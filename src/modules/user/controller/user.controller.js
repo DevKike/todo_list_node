@@ -4,7 +4,7 @@ const { register, findUserBy } = require("../service/user.service");
 
 const registerUser = async (user) => {
   try {
-    const isEmailExist = await findUserBy({ email: user.email })
+    const isEmailExist = await findUserBy({ email: user.email });
 
     if (isEmailExist) {
       throw new Error("Email already in use");
@@ -51,6 +51,18 @@ const getData = async (userId) => {
   } catch (error) {
     throw error;
   }
-}
+};
 
-module.exports = { registerUser, loginUser, getData};
+const updateData = async (userDataToUpdate, userToUpdate) => {
+  try {
+    await userToUpdate.update({ name: userDataToUpdate.name }, { fields: ['name']});
+    await userToUpdate.update({ last_name: userDataToUpdate.last_name }, { fields: ['last_name']});
+    await userToUpdate.update({ email: userDataToUpdate.email }, { fields: ['email']});
+    const password = hash(userDataToUpdate.password);
+    await userToUpdate.update({ password: password }, { fields: ['password']});
+  } catch (error) {
+    throw error;
+  }
+};
+
+module.exports = { registerUser, loginUser, getData, updateData };
