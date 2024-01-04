@@ -46,11 +46,12 @@ userRouter.post("/login", schemaValidator(loginSchema), async (req, res) => {
 
 userRouter.get("/data", authToken(), async (req, res) => {
   try {
-    const data = await getData(req.user);
+    const userData = await getData(req.user);
+    delete userData.dataValues.password;
 
     res.status(200).json({
       message: "Data was obtained successfully",
-      data,
+      userData,
     });
   } catch (error) {
     res.status(500).json({
