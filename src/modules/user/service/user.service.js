@@ -24,4 +24,13 @@ const findUserBy = async (user) => {
   }
 };
 
-module.exports = { register, findUserBy };
+const update = async (user) => {
+  try {
+    return await User.update({ ...user }, { where: { id: user.id } });
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
+module.exports = { register, findUserBy, update };

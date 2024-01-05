@@ -1,10 +1,10 @@
 const { hash, compare } = require("../../../util/bcrypt");
 const { signToken } = require("../../../util/jwtToken");
-const { register, findUserBy } = require("../service/user.service");
+const { register, findUserBy, update } = require("../service/user.service");
 
 const registerUser = async (user) => {
   try {
-    const isEmailExist = await findUserBy({ email: user.email })
+    const isEmailExist = await findUserBy({ email: user.email });
 
     if (isEmailExist) {
       throw new Error("Email already in use");
@@ -51,6 +51,26 @@ const getData = async (userId) => {
   } catch (error) {
     throw error;
   }
+};
+
+const updateData = async (userId, userData) => {
+  try {
+    const user = await getData(userId);
+
+    if (userData?.password) {
+      const password = hash(userData.password);
+      userData.password = password;
+    }
+
+    const userToUpdate = {...user.toJSON(), ...userData};
+
+    await update(userToUpdate);
+
+    return "Usuario actualizado con éxito";
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
 }
 
-module.exports = { registerUser, loginUser, getData};
+module.exports = { registerUser, loginUser, getData, updateData };
