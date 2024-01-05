@@ -3,16 +3,28 @@ const customMessages = {
   "string.email": "The email doesn't comply with the expected format!"
 };
 
+const name = Joi.string().min(4).max(255);
+const last_name = Joi.string().min(3).max(225);
+const email = Joi.string().min(6).max(225).email().message(customMessages);
+const password = Joi.string().min(6).max(1024);
+
 const registerSchema = Joi.object({
-  name: Joi.string().min(4).max(255).required(),
-  last_name: Joi.string().min(3).max(225).required(),
-  email: Joi.string().min(6).max(225).required().email().message(customMessages),
-  password: Joi.string().min(6).max(1024).required()
+  name: name.required(),
+  last_name: last_name.required(),
+  email: email.required(),
+  password: password.required()
 });
 
 const loginSchema = Joi.object({
-  email: Joi.string().required().email().message(customMessages),
-  password: Joi.string().required()
+  email: email.required(),
+  password: password.required()
 });
 
-module.exports = { registerSchema, loginSchema };
+const updateSchema = Joi.object({
+  name,
+  last_name,
+  email,
+  password
+})
+
+module.exports = { registerSchema, loginSchema, updateSchema };

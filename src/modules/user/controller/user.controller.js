@@ -1,6 +1,6 @@
 const { hash, compare } = require("../../../util/bcrypt");
 const { signToken } = require("../../../util/jwtToken");
-const { register, findUserBy } = require("../service/user.service");
+const { register, findUserBy, update } = require("../service/user.service");
 
 const registerUser = async (user) => {
   try {
@@ -53,16 +53,24 @@ const getData = async (userId) => {
   }
 };
 
-const updateData = async (userDataToUpdate, userToUpdate) => {
+const updateData = async (userId, userData) => {
   try {
-    await userToUpdate.update({ name: userDataToUpdate.name }, { fields: ['name']});
-    await userToUpdate.update({ last_name: userDataToUpdate.last_name }, { fields: ['last_name']});
-    await userToUpdate.update({ email: userDataToUpdate.email }, { fields: ['email']});
-    const password = hash(userDataToUpdate.password);
-    await userToUpdate.update({ password: password }, { fields: ['password']});
+    const user = await getData(userId);
+
+    if (userData?.password) {
+      const password = hash(userData.password);
+      userData.password = password;
+    }
+
+    const userToUpdate = {...user.toJSON(), ...userData};
+
+    await update(userToUpdate);
+
+    return "Usuario actualizado con éxito";
   } catch (error) {
+    console.error(error);
     throw error;
   }
-};
+}
 
 module.exports = { registerUser, loginUser, getData, updateData };
