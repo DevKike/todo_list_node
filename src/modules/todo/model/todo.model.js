@@ -1,4 +1,5 @@
 const { Model, DataTypes } = require("sequelize");
+const { USER_TABLE } = require("../../user/model/user.model"); 
 
 const TODO_TABLE = "todos";
 
@@ -23,13 +24,21 @@ const ToDoSchema = {
     type: DataTypes.BOOLEAN,
     defaultValue: false,
   },
+  userId: {
+    allowNull: false,
+    type: DataTypes.INTEGER,
+    unique: true,
+    references: {
+      model: USER_TABLE,
+      key: 'id'
+    },
+  }
 };
 
 class ToDo extends Model {
-    static associate(models) {
-        ToDo.belongsTo(models.User);
-    }
-
+  static associate(models) {
+    this.belongsTo(models.User, { as: "user" });
+  }
 
   static config(sequelize) {
     return {
