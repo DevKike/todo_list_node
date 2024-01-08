@@ -66,7 +66,7 @@ const updateData = async (userId, userData) => {
 
     await update(userToUpdate);
 
-    return "Usuario actualizado con éxito";
+    return "User was updated successfully";
   } catch (error) {
     console.error(error);
     throw error;
