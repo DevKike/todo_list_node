@@ -26,6 +26,11 @@ const ToDoSchema = {
 };
 
 class ToDo extends Model {
+    static associate(models) {
+        ToDo.belongsTo(models.User);
+    }
+
+
   static config(sequelize) {
     return {
       sequelize,
