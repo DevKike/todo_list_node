@@ -12,6 +12,7 @@ const registerUser = async (user) => {
 
     const password = hash(user.password);
     const newUser = await register({ ...user, password });
+
     return newUser;
   } catch (error) {
     throw error;
@@ -33,6 +34,7 @@ const loginUser = async ({ email, password }) => {
     }
 
     const token = signToken(user.id);
+    
     return token;
   } catch (error) {
     throw error;

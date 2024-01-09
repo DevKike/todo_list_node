@@ -14,7 +14,6 @@ const create = async (data) => {
 
 const update = async (toDo, toDoId ) => {
   try {
-
     const updatedToDo = await ToDo.update( {...toDo}, { where: { id: toDoId } });
     
     return updatedToDo;

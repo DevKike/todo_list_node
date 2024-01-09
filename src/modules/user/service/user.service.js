@@ -4,6 +4,7 @@ const User = require("../model/user.model").User;
 const register = async (data) => {
   try {
     const user = await models.User.create(data);
+
     return user;
   } catch (error) {
     console.error(error);

@@ -25,10 +25,9 @@ toDoRouter.patch("/update/:id", authToken(), schemaValidator(updateToDoSchema), 
   try {
     const toDoUpdated = await updateToDo(req.body, req.params.id, req.user);
 
-
     res.status(200).json({
       message: "ToDo was updated successfully",
-      toDoUpdated,
+      toDoUpdated: new Boolean(toDoUpdated),
     });
   } catch (error) {
     res.status(500).json({
