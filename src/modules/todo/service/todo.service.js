@@ -12,4 +12,19 @@ const create = async (data) => {
   }
 };
 
-module.exports = create;
+const update = async (toDo, toDoId ) => {
+  try {
+    const updatedToDo = await ToDo.update( {...toDo}, { where: { id: toDoId } });
+    
+    return updatedToDo;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
+const foundToDo = async (toDoId, userId) => {
+  return await ToDo.findOne({ where: { id: toDoId, userId }})
+}
+
+module.exports = { create, update, foundToDo };
