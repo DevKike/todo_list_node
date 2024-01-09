@@ -1,4 +1,4 @@
-const create = require("../service/todo.service");
+const { create, update, foundToDo } = require("../service/todo.service");
 
 const createToDo = async (toDo, userId) => {
   try {    
@@ -10,6 +10,23 @@ const createToDo = async (toDo, userId) => {
   } catch (error) {
     throw error;
   }
-};
+}
 
-module.exports = createToDo;
+const updateToDo = async (toDo, toDoId, userId) => {
+  try {
+    const foundTodo = await foundToDo(toDoId, userId);
+
+    if(!foundTodo) {
+      throw new Error("ToDo not found or user not authorized to update");
+    }
+
+    const toDoUpdated = await update(toDo, toDoId);
+
+    return toDoUpdated;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
+module.exports = { createToDo, updateToDo };
