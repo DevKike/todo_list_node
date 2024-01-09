@@ -1,4 +1,4 @@
-const { create, update, foundToDo } = require("../service/todo.service");
+const { create, update, get, foundToDo } = require("../service/todo.service");
 
 const createToDo = async (toDo, userId) => {
   try {    
@@ -29,4 +29,14 @@ const updateToDo = async (toDo, toDoId, userId) => {
   }
 }
 
-module.exports = { createToDo, updateToDo };
+const getToDoes = async (userId) => {
+  try {
+    const toDoes = await get(userId);
+
+    return toDoes;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+module.exports = { createToDo, updateToDo, getToDoes };
