@@ -32,6 +32,6 @@ const update = async (user) => {
     console.error(error);
     throw error;
   }
-}
+};
 
 module.exports = { register, findUserBy, update };
