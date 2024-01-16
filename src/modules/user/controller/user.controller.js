@@ -70,7 +70,6 @@ const updateData = async (userId, userData) => {
 
     return "User was updated successfully";
   } catch (error) {
-    console.error(error);
     throw error;
   }
 }

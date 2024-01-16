@@ -80,10 +80,7 @@ describe("USER CONTROLLER TEST", () => {
     findUserBy.mockResolvedValue(null);
 
     await expect(
-      loginUser({
-        email: userData.email,
-        password: userData.password,
-      })
+      loginUser({ email: userData.email, password: userData.password })
     ).rejects.toThrow("Incorrect email or password");
 
     expect(compare).not.toHaveBeenCalled();
@@ -99,10 +96,7 @@ describe("USER CONTROLLER TEST", () => {
     compare.mockReturnValue(false);
 
     await expect(
-      loginUser({
-        email: userData.email,
-        password: userData.password,
-      })
+      loginUser({ email: userData.email, password: userData.password })
     ).rejects.toThrow("Incorrect email or password");
 
     expect(compare).toHaveBeenCalledWith(userData.password, "hashedPassword");
@@ -143,5 +137,41 @@ describe("USER CONTROLLER TEST", () => {
     const result = await updateData(userId, userDataToUpdate);
 
     expect(result).toBe("User was updated successfully");
+  });
+
+  it("should update user password and hashed it successfully", async () => {
+    const userId = 1;
+    const userDataToUpdate = { password: "NewPassword" };
+    
+    findUserBy.mockResolvedValue({ toJSON: () => userData });
+    hash.mockReturnValueOnce("hashedPassword");
+    update.mockResolvedValue();
+
+    const result = await updateData(userId, userDataToUpdate);
+    expect(result).toBe("User was updated successfully");
+
+    expect(hash).toHaveBeenCalledWith("NewPassword");
+    expect(update).toHaveBeenCalledWith({
+      ...userData,
+      password: "hashedPassword",
+    });
+  });
+
+  it("should throw an error if update fails", async () => {
+    const userId = 1;
+    const userDataToUpdate = { password: "NewPassword" };
+    
+    findUserBy.mockImplementation(() => {
+      throw new Error("error");
+    });
+
+    hash.mockReturnValueOnce("hashedPassword");
+    update.mockResolvedValue();
+
+    try {
+      await updateData(userId, userDataToUpdate);
+    } catch (error) {
+      expect(error).toBeInstanceOf(Error);
+    };
   });
 });
