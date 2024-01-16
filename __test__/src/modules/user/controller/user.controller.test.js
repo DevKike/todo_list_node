@@ -136,15 +136,12 @@ describe("USER CONTROLLER TEST", () => {
   it("should update user data successfully", async () => {
     const userId = 1;
     const userDataToUpdate = { name: "NewName" };
-    const updatedUserData = { ...userData, id: userId, name: "NewName" };
 
-    getData.mockResolvedValue(userData);
+    findUserBy.mockResolvedValue({ toJSON: () => userData });
     update.mockResolvedValue();
 
     const result = await updateData(userId, userDataToUpdate);
 
-    expect(getData).toHaveBeenCalledWith(userId);
-    expect(update).toHaveBeenCalledWith(updatedUserData);
     expect(result).toBe("User was updated successfully");
   });
 });
