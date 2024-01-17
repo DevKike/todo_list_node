@@ -46,5 +46,16 @@ describe("USER SERVICE TEST", () => {
     }
     expect(models.User.create).toHaveBeenCalledWith(userData);
   });
-  
+
+  it("should find a user by id successfully", async () => {
+    const userId = 1;
+    const user = { id: userId, ...userData };
+
+    models.User.findByPk.mockResolvedValueOnce(user);
+
+    const result = await findUserBy({ id: userId });
+
+    expect(result).toEqual(user);
+    expect(models.User.findByPk).toHaveBeenCalledWith(userId);
+  });
 });
