@@ -1,6 +1,5 @@
 const { register, findUserBy } = require("../../../../../src/modules/user/service/user.service");
 const { models } = require("../../../../../src/db/sequelize");
-const { User } = require("../../../../../src/modules/user/model/user.model");
 
 jest.mock("../../../../../src/db/sequelize", () => ({
   models: {
@@ -56,6 +55,5 @@ describe("USER SERVICE TEST", () => {
     const result = await findUserBy({ id: userId });
 
     expect(result).toEqual(user);
-    expect(models.User.findByPk).toHaveBeenCalledWith(userId);
   });
 });

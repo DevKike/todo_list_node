@@ -24,7 +24,6 @@ const updateToDo = async (toDo, toDoId, userId) => {
 
     return toDoUpdated;
   } catch (error) {
-    console.error(error);
     throw error;
   }
 }
@@ -35,7 +34,6 @@ const getToDoes = async (userId) => {
 
     return toDoes;
   } catch (error) {
-    console.error(error);
     throw error;
   }
 }

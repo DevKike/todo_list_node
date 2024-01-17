@@ -1,5 +1,4 @@
 const { models } = require("../../../db/sequelize");
-const ToDo = require("../model/todo.model").ToDo;
 
 const create = async (data) => {
   try {
@@ -7,14 +6,13 @@ const create = async (data) => {
     
     return toDo;
   } catch (error) {
-    console.error(error);
     throw error;
   }
 };
 
 const update = async (toDo, toDoId ) => {
   try {
-    const updatedToDo = await ToDo.update( {...toDo}, { where: { id: toDoId } });
+    const updatedToDo = await models.ToDo.update( {...toDo}, { where: { id: toDoId } });
     
     return updatedToDo;
   } catch (error) {
@@ -25,7 +23,7 @@ const update = async (toDo, toDoId ) => {
 
 const get = async (userId) => {
   try {
-    return await ToDo.findAll({ where: {userId} });
+    return await models.ToDo.findAll({ where: {userId} });
   } catch (error) {
     console.error(error);
     throw error;
@@ -33,7 +31,7 @@ const get = async (userId) => {
 }
 
 const foundToDo = async (toDoId, userId) => {
-  return await ToDo.findOne({ where: { id: toDoId, userId }})
+  return await models.ToDo.findOne({ where: { id: toDoId, userId }})
 }
 
 module.exports = { create, update, get, foundToDo };
