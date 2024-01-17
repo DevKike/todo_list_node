@@ -7,7 +7,6 @@ const register = async (data) => {
 
     return user;
   } catch (error) {
-    console.error(error);
     throw error;
   }
 };
