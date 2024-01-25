@@ -29,14 +29,19 @@ const ToDoSchema = {
     type: DataTypes.INTEGER,
     references: {
       model: USER_TABLE,
-      key: 'id'
+      key: "id",
     },
+    onDelete: "CASCADE"
   }
 };
 
 class ToDo extends Model {
   static associate(models) {
-    this.belongsTo(models.User, { as: "user" });
+    this.belongsTo(models.User, {
+      as: "user",
+       foreignKey: "userId",
+       onDelete: "CASCADE", 
+    });
   }
 
   static config(sequelize) {
