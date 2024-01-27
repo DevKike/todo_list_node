@@ -30,4 +30,13 @@ const update = async (user) => {
   }
 };
 
-module.exports = { register, findUserBy, update };
+const destroy = async (userId) => {
+  try {
+    return await User.destroy({ where: { id: userId } });
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
+module.exports = { register, findUserBy, update, destroy };

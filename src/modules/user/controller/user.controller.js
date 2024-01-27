@@ -1,6 +1,6 @@
 const { hash, compare } = require("../../../util/bcrypt");
 const { signToken } = require("../../../util/jwtToken");
-const { register, findUserBy, update } = require("../service/user.service");
+const { register, findUserBy, update, destroy } = require("../service/user.service");
 
 const registerUser = async (user) => {
   try {
@@ -72,6 +72,14 @@ const updateData = async (userId, userData) => {
   } catch (error) {
     throw error;
   }
-}
+};
 
-module.exports = { registerUser, loginUser, getData, updateData };
+const deleteUser = async (userId) => {
+  try {
+    await destroy(userId);
+  } catch (error) {
+    throw error;
+  }
+};
+
+module.exports = { registerUser, loginUser, getData, updateData, deleteUser };

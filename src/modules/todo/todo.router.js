@@ -1,5 +1,5 @@
 const express = require("express");
-const { createToDo, updateToDo, getToDoes } = require("./controller/todo.controller");
+const { createToDo, updateToDo, getToDoes, deleteToDo } = require("./controller/todo.controller");
 const authToken = require("../../middleware/authToken.middleware");
 const schemaValidator = require("../../middleware/schemaValidator.middleware");
 const { createToDoSchema, updateToDoSchema } = require("./schema/todo.schema");
@@ -36,7 +36,7 @@ toDoRouter.patch("/update/:id", authToken(), schemaValidator(updateToDoSchema), 
   }
 });
 
-toDoRouter.get("/", authToken(), async(req, res) => {
+toDoRouter.get("/", authToken(), async (req, res) => {
   try {
     const toDoes = await getToDoes(req.user);
     
@@ -44,6 +44,18 @@ toDoRouter.get("/", authToken(), async(req, res) => {
       message: "ToDoes were obtained successfully",
       toDoes,
     });
+  } catch (error) {
+    res.status(500).json({
+      error: error.message, 
+    });
+  }
+});
+
+toDoRouter.delete("/delete/:id", authToken(), async (req, res) => {
+  try {
+    await deleteToDo(req.params.id, req.user);
+
+    res.sendStatus(204);
   } catch (error) {
     res.status(500).json({
       error: error.message, 

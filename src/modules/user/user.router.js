@@ -1,5 +1,5 @@
 const express = require("express");
-const { registerUser, loginUser, getData, updateData } = require("./controller/user.controller");
+const { registerUser, loginUser, getData, updateData, deleteUser } = require("./controller/user.controller");
 const schemaValidator = require("../../middleware/schemaValidator.middleware");
 const { registerSchema, loginSchema, updateSchema } = require("./schema/user.schema");
 const authToken = require("../../middleware/authToken.middleware");
@@ -71,6 +71,19 @@ userRouter.patch("/update", authToken(), schemaValidator(updateSchema), async (r
   } catch (error) {
     res.status(500).json({
       message: "Error updating data",
+      error: error.message,
+    });
+  }
+});
+
+userRouter.delete("/delete", authToken(), async (req, res) => {
+  try {
+    await deleteUser(req.user);
+
+    res.status(204);
+  } catch (error) {
+    res.status(500).json({
+      message: "Error deleting user",
       error: error.message,
     });
   }
