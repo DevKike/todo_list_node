@@ -11,6 +11,9 @@ const validInput = {
 };
 
 describe("TODO SCHEMA TEST", () => {
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
   it("should create schema with required title and description fields", () => {
     const schema = createToDoSchema;
     const result = schema.validate({
