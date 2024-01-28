@@ -218,4 +218,5 @@ $RECYCLE.BIN/
 *.lnk
 
 src/config/database.json
+coverage
 # End of https://www.toptal.com/developers/gitignore/api/node,dotenv,windows,linux,macos        
