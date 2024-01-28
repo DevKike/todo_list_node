@@ -8,6 +8,9 @@ const validInput = {
 };
 
 describe("USER SCHEMA TEST", () => {
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
   it("should validate a valid registration input", () => {
     const result = registerSchema.validate(validInput);
     expect(result.error).toBeUndefined();
