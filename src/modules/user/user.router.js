@@ -80,7 +80,7 @@ userRouter.delete("/delete", authToken(), async (req, res) => {
   try {
     await deleteUser(req.user);
 
-    res.status(204);
+    res.sendStatus(204);
   } catch (error) {
     res.status(500).json({
       message: "Error deleting user",

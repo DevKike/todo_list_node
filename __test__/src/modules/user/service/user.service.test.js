@@ -1,4 +1,4 @@
-const { register, findUserBy, update } = require("../../../../../src/modules/user/service/user.service");
+const { register, findUserBy, update, destroy } = require("../../../../../src/modules/user/service/user.service");
 const { models } = require("../../../../../src/db/sequelize");
 
 jest.mock("../../../../../src/db/sequelize", () => ({
@@ -8,6 +8,7 @@ jest.mock("../../../../../src/db/sequelize", () => ({
       findByPk: jest.fn(),
       findOne: jest.fn(),
       update: jest.fn(),
+      destroy: jest.fn(),
     },
   },
 }));
@@ -99,5 +100,28 @@ describe("USER SERVICE TEST", () => {
       expect(error).toBe(mockError);
     }
     expect(models.User.update).toHaveBeenCalledWith({ ...userData }, { where: { id: userData.id } });
+  });  
+
+  it("should delete a user successfully", async () => {
+    const userId = 'validUserId';
+    const mockResult = { affectedRows: 1 };
+  
+    models.User.destroy.mockResolvedValueOnce(mockResult);
+
+    const result = await destroy(userId);
+  
+    expect(models.User.destroy).toHaveBeenCalledWith({ where: { id: userId } });
+  
+    expect(result).toEqual(mockResult);
+  });
+
+  it('should throw an error when delete user fails', async () => {
+    const userId = 'validUserId';
+    const errorMessage = 'Failed to destroy user';
+  
+    models.User.destroy.mockRejectedValueOnce(new Error(errorMessage));
+    await expect(destroy(userId)).rejects.toThrow(errorMessage);
+
+    expect(models.User.destroy).toHaveBeenCalledWith({ where: { id: userId } });
   });
 });

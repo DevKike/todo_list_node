@@ -14,9 +14,9 @@ const createToDo = async (toDo, userId) => {
 
 const updateToDo = async (toDo, toDoId, userId) => {
   try {
-    const foundToDo = await foundToDo(toDoId, userId);
+    const foundTodo = await foundToDo(toDoId, userId);
 
-    if (!foundToDo) {
+    if (!foundTodo) {
       throw new Error("ToDo not found or user not authorized to update");
     }
 
@@ -57,4 +57,5 @@ const deleteToDo = async (toDoId, userId) => {
     throw error;
   }
 };
+
 module.exports = { createToDo, updateToDo, getToDoes, deleteToDo };

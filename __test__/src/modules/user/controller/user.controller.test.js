@@ -1,5 +1,5 @@
-const { registerUser, loginUser, getData, updateData } = require("../../../../../src/modules/user/controller/user.controller");
-const { findUserBy, register, update } = require("../../../../../src/modules/user/service/user.service");
+const { registerUser, loginUser, getData, updateData, deleteUser } = require("../../../../../src/modules/user/controller/user.controller");
+const { findUserBy, register, update, destroy } = require("../../../../../src/modules/user/service/user.service");
 const { hash, compare } = require("../../../../../src/util/bcrypt");
 const { signToken } = require("../../../../../src/util/jwtToken");
 
@@ -12,6 +12,7 @@ jest.mock("../../../../../src/modules/user/service/user.service", () => ({
   findUserBy: jest.fn(),
   register: jest.fn(),
   update: jest.fn(),
+  destroy: jest.fn(),
 }));
 
 jest.mock("../../../../../src/util/jwtToken", () => ({
@@ -37,10 +38,7 @@ describe("USER CONTROLLER TEST", () => {
     const result = await registerUser(userData);
 
     expect(hash).toHaveBeenCalledWith("password123");
-    expect(register).toHaveBeenCalledWith({
-      ...userData,
-      password: "hashed(password123)",
-    });
+    expect(register).toHaveBeenCalledWith({ ...userData, password: "hashed(password123)" });
 
     expect(result).toEqual({ id: 1, ...userData });
   });
@@ -151,10 +149,7 @@ describe("USER CONTROLLER TEST", () => {
     expect(result).toBe("User was updated successfully");
 
     expect(hash).toHaveBeenCalledWith("NewPassword");
-    expect(update).toHaveBeenCalledWith({
-      ...userData,
-      password: "hashedPassword",
-    });
+    expect(update).toHaveBeenCalledWith({ ...userData, password: "hashedPassword" });
   });
 
   it("should throw an error if update fails", async () => {
@@ -173,5 +168,21 @@ describe("USER CONTROLLER TEST", () => {
     } catch (error) {
       expect(error).toBeInstanceOf(Error);
     };
+  });
+
+  it('should delete a user when a valid user ID is provided', async () => {
+    const userId = 'validUserId';
+    await deleteUser(userId);
+    expect(destroy).toHaveBeenCalledWith(userId);
+  });
+
+  it('should throw an error when delete operation fails', async () => {
+    const userId = 'validUserId';
+    const errorMessage = 'Failed to delete user';
+  
+    destroy.mockRejectedValueOnce(new Error(errorMessage));
+    await expect(deleteUser(userId)).rejects.toThrow(errorMessage);
+  
+    expect(destroy).toHaveBeenCalledWith(userId);
   });
 });
