@@ -32,9 +32,8 @@ const update = async (user) => {
 
 const destroy = async (userId) => {
   try {
-    return await User.destroy({ where: { id: userId } });
+    return await models.User.destroy({ where: { id: userId } });
   } catch (error) {
-    console.error(error);
     throw error;
   }
 }
