@@ -18,7 +18,7 @@ To get started with this project, follow these steps:
 4. **Execute the project:**
     ```bash
     npm run dev
-5. **Execute unit tests**
+5. **Execute unit tests:**
     ```bash
     npm run test:dev
     
