@@ -17,7 +17,7 @@ To get started with this project, follow these steps:
     npm run migration:run
 4. **Execute the project:**
     ```bash
-    npm run dev
+    npm start
 5. **Execute unit tests:**
     ```bash
     npm run test:dev
